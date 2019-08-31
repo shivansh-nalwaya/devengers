@@ -11,7 +11,9 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    return "Done"
+    log_model = LogModel()
+    resp = log_model.data_encoder(request.data)
+    return log_model.log_predict(resp)
 
 
 if __name__ == '__main__':
