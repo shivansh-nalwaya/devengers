@@ -144,12 +144,19 @@ export default class App extends Component {
               <div>
                 <Select
                   defaultValue={this.state.selectedFacet}
+                  style={{ minWidth: 300 }}
                   onChange={e => {
                     this.setState({ selectedFacet: e });
                   }}
                 >
                   {Object.keys(this.state.data).map(k => (
-                    <Select.Option key={k}>{k}</Select.Option>
+                    <Select.Option key={k}>
+                      {k
+                        .replace(/_/g, " ")
+                        .split(" ")
+                        .map(x => x[0].toUpperCase() + x.slice(1, 100))
+                        .join(" ")}
+                    </Select.Option>
                   ))}
                 </Select>
                 <CanvasJSChart options={options} />
