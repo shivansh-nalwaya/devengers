@@ -1,0 +1,2 @@
+class FeatureDatum < ApplicationRecord
+end
