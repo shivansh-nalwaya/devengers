@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request
-
+from predit_model import LogModel
 app = Flask(__name__)
 
 
@@ -9,10 +9,10 @@ def index():
     return 'Received !'
 
 
-@app.route('/new-radio', methods=['POST'])
-def new_radio():
+@app.route('/predict', methods=['POST'])
+def predict():
     return "Done"
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=80)
