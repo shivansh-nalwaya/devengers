@@ -548,7 +548,7 @@ class RegistrationForm extends React.Component {
                   </Form.Item>
                   <Form.Item {...tailFormItemLayout}>
                     <Button
-                      loading={this.state.loading}
+                      // loading={this.state.loading}
                       type="primary"
                       htmlType="submit"
                     >

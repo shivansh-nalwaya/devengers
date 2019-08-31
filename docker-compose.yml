@@ -20,6 +20,8 @@ services:
     command: python main.py
     volumes:
       - ./server:/usr/src/app
+    ports:
+      - "4444:4444"
 
   web:
     build: ./web

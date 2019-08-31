@@ -1,3 +1,6 @@
+require 'net/http'
+require 'json'
+
 class FeatureSetsController < ApplicationController
   protect_from_forgery only: %i[create update destroy]
 
@@ -13,6 +16,15 @@ class FeatureSetsController < ApplicationController
 
   def create
     @feature_set = FeatureSet.create(feature_set_params)
+    uri = URI('http://10.105.16.114:4444/predict')
+    http = Net::HTTP.new(uri.host, uri.port)
+    req = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json',  
+      'Authorization' => 'XXXXXXXXXXXXXXXX'})
+    Rails.logger.info [@feature_set.data.values]
+    req.body = {"data" => [@feature_set.data.values]}.to_json
+    res = http.request(req)
+    puts "response #{res.body}"
+    puts JSON.parse(res.body)
     if @feature_set.save
       render json: { message: "Created feature_set", feature_set: @feature_set }, status: :ok
     else

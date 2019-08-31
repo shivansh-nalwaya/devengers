@@ -1,8 +1,8 @@
-import os
 from flask import Flask, request
 from predit_model import LogModel
-app = Flask(__name__)
+import json
 
+app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -11,10 +11,10 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    data = request.json["data"]
     log_model = LogModel()
-    resp = log_model.data_encoder(request.data)
-    return log_model.log_predict(resp)
+    return str(log_model.all_predict(data))
 
 
 if __name__ == '__main__':
-    app.run(port=80)
+    app.run(host="0.0.0.0", port=4444, debug=True)
