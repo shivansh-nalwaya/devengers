@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import CanvasJSReact from "../canvas/canvasjs.react";
-var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import history from "../history";
+
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+const { Header, Content, Footer, Sider } = Layout;
 
 export default class App extends Component {
   render() {
@@ -37,9 +40,105 @@ export default class App extends Component {
     };
 
     return (
-      <div>
-        <CanvasJSChart options={options} />
-      </div>
+      <Layout>
+        <Sider
+          breakpoint="lg"
+          collapsedWidth="0"
+          style={{ backgroundColor: "#393F53", height: "100vh" }}
+          onBreakpoint={broken => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+          }}
+        >
+          <div
+            style={{
+              color: "white",
+              fontSize: 22,
+              display: "flex",
+              justifyContent: "space-around",
+              alignItems: "center",
+              backgroundColor: "#2D3747",
+              height: 64
+            }}
+          >
+            <Icon type="menu"></Icon>
+            HR Portal
+          </div>
+          <Menu
+            theme="dark"
+            mode="inline"
+            style={{ backgroundColor: "#393F53", padding: 0 }}
+          >
+            <Menu.Item
+              key="1"
+              style={styles.menuItemFirst}
+              onClick={() => {
+                history.push("/dashboard");
+              }}
+            >
+              <Icon type="home" style={{ fontSize: 16, color: "white" }} />
+              <span className="nav-text">Home</span>
+            </Menu.Item>
+            <Menu.Item
+              key="2"
+              style={styles.menuItem}
+              onClick={() => {
+                history.push("/form");
+              }}
+            >
+              <Icon type="plus" style={{ fontSize: 18, color: "white" }} />
+              <span className="nav-text">Form</span>
+            </Menu.Item>
+            <Menu.Item
+              key="3"
+              style={styles.menuItem}
+              onClick={() => {
+                history.push("/");
+              }}
+            >
+              <Icon type="logout" style={{ fontSize: 18, color: "white" }} />
+              <span className="nav-text">Logout</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: "#2D3747", padding: 0 }} />
+          <Content style={{ margin: "24px 16px 0" }}>
+            <CanvasJSChart options={options} />
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            Ant Design ©2018 Created by Ant UED
+          </Footer>
+        </Layout>
+      </Layout>
     );
   }
 }
+
+const styles = {
+  menuItem: {
+    margin: 0,
+    paddingTop: 24,
+    paddingBottom: 24,
+    borderBottom: "1px solid black",
+    fontSize: 18,
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#2D3747"
+  },
+  menuItemFirst: {
+    margin: 0,
+    paddingTop: 24,
+    paddingBottom: 24,
+    borderTop: "1px solid black",
+    borderBottom: "1px solid black",
+    fontSize: 18,
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    backgroundColor: "#2D3747"
+  }
+};
