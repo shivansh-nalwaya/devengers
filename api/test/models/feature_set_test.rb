@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FeatureDatumTest < ActiveSupport::TestCase
+class FeatureSetTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
