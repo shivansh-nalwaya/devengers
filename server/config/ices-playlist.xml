@@ -1,0 +1,40 @@
+<ices>
+    <background>1</background>
+    <logpath>/home/shivansh/project/rails_apps/rjx/server/tmp/logs</logpath>
+    <logfile>ices.log</logfile>
+    <loglevel>4</loglevel>
+    <consolelog>0</consolelog>
+
+    <stream>
+        <metadata>
+            <name>Example stream name</name>
+            <genre>Example genre</genre>
+            <description>A short description of your stream</description>
+        </metadata>
+
+        <input>
+            <module>playlist</module>
+            <param name="type">basic</param>
+            <param name="file">/home/shivansh/project/rails_apps/rjx/server/tmp/playlist.txt</param>
+            <param name="random">0</param>
+            <param name="restart-after-reread">0</param>
+            <param name="once">0</param>
+        </input>
+
+        <instance>
+            <hostname>localhost</hostname>
+            <port>4444</port>
+            <password>hackme</password>
+            <mount>/example.ogg</mount>
+            <reconnectdelay>2</reconnectdelay>
+            <reconnectattempts>5</reconnectattempts> 
+            <maxqueuelength>80</maxqueuelength>
+            <encode>  
+                <nominal-bitrate>64000</nominal-bitrate>
+                <samplerate>44100</samplerate>
+                <channels>2</channels>
+            </encode>
+        </instance>
+
+	</stream>
+</ices>

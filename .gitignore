@@ -1,0 +1,6 @@
+**/log/*
+**/tmp
+!/log/.keep
+!/tmp/.keep
+api/db/schema.rb
+**/__pycache__
