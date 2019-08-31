@@ -1,97 +1,45 @@
-import React from "react";
-import { Form, Icon, Input, Button } from "antd";
-import history from "../history";
+import React, { Component } from "react";
+import CanvasJSReact from "../canvas/canvasjs.react";
+var CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-class NormalLoginForm extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        fetch("http://localhost:3000/users/sign_in", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({ user: values })
-        })
-          .then(res => res.json())
-          .then(res => {
-            history.push("/dashboard");
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
-    });
-  };
-
+export default class App extends Component {
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const options = {
+      animationEnabled: true,
+      exportEnabled: true,
+      theme: "light2",
+      title: {
+        text: "Simple Column Chart with Index Labels"
+      },
+      data: [
+        {
+          type: "column",
+          indexLabelFontColor: "#5A5757",
+          indexLabelPlacement: "outside",
+          dataPoints: [
+            { x: 10, y: 71 },
+            { x: 20, y: 55 },
+            { x: 30, y: 50 },
+            { x: 40, y: 65 },
+            { x: 50, y: 71 },
+            { x: 60, y: 68 },
+            { x: 70, y: 38 },
+            { x: 80, y: 92 },
+            { x: 90, y: 54 },
+            { x: 100, y: 60 },
+            { x: 110, y: 21 },
+            { x: 120, y: 49 },
+            { x: 130, y: 36 }
+          ]
+        }
+      ]
+    };
+
     return (
-      <div
-        style={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "#565656"
-        }}
-      >
-        <div
-          style={{
-            width: "50%",
-            padding: 20,
-            backgroundColor: "white",
-            borderRadius: 10
-          }}
-        >
-          <center>
-            <h3>Account Login</h3>
-          </center>
-          <Form onSubmit={this.handleSubmit} className="login-form">
-            <Form.Item>
-              {getFieldDecorator("email", {
-                rules: [{ required: true, message: "Please input your email!" }]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="Email"
-                />
-              )}
-            </Form.Item>
-            <Form.Item>
-              {getFieldDecorator("password", {
-                rules: [
-                  { required: true, message: "Please input your Password!" }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  type="password"
-                  placeholder="Password"
-                />
-              )}
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Log in
-              </Button>
-              Or <a href="">register now!</a>
-            </Form.Item>
-          </Form>
-        </div>
+      <div>
+        <CanvasJSChart options={options} />
       </div>
     );
   }
 }
-
-const WrappedNormalLoginForm = Form.create({ name: "normal_login" })(
-  NormalLoginForm
-);
-
-export default WrappedNormalLoginForm;
