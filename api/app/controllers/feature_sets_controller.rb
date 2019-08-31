@@ -5,7 +5,7 @@ class FeatureSetsController < ApplicationController
   protect_from_forgery only: %i[create update destroy]
 
   def index
-    @feature_sets = FeatureSet.all
+    @feature_sets = FeatureSet.stats
     render json: { message: "Loaded feature_sets", feature_sets: @feature_sets }, status: :ok
   end
 
@@ -22,6 +22,7 @@ class FeatureSetsController < ApplicationController
     req.body = {"data" => [@feature_set.data.values]}.to_json
     res = http.request(req)
     resp =  JSON.parse(res.body)[0]
+    @feature_set.data["treatment_required"] = resp == 0 ? "No" : "Yes"
     if @feature_set.save
       render json: { message: "Created feature_set", feature_set: @feature_set, resp: resp }, status: :ok
     else

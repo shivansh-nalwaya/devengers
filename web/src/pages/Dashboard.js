@@ -1,16 +1,30 @@
 import React, { Component } from "react";
 import CanvasJSReact from "../canvas/canvasjs.react";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import { Layout, Menu, Icon, Spin, Select } from "antd";
 import history from "../history";
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const { Header, Content, Footer, Sider } = Layout;
 
 export default class App extends Component {
+  state = { loading: true, data: {}, selectedFacet: "age" };
+  constructor(props) {
+    super(props);
+    fetch("http://localhost:3000/feature_sets")
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+        this.setState({ loading: false, data: res.feature_sets });
+      })
+      .catch(res => {
+        console.log(res);
+        this.setState({ loading: false });
+      });
+  }
   render() {
     const options = {
       animationEnabled: true,
-      exportEnabled: true,
+      exportEnabled: false,
       theme: "light2",
       title: {
         text: "Simple Column Chart with Index Labels"
@@ -20,31 +34,51 @@ export default class App extends Component {
           type: "column",
           indexLabelFontColor: "#5A5757",
           indexLabelPlacement: "outside",
-          dataPoints: [
-            { x: 10, y: 71 },
-            { x: 20, y: 55 },
-            { x: 30, y: 50 },
-            { x: 40, y: 65 },
-            { x: 50, y: 71 },
-            { x: 60, y: 68 },
-            { x: 70, y: 38 },
-            { x: 80, y: 92 },
-            { x: 90, y: 54 },
-            { x: 100, y: 60 },
-            { x: 110, y: 21 },
-            { x: 120, y: 49 },
-            { x: 130, y: 36 }
-          ]
+          dataPoints: this.state.loading
+            ? []
+            : Object.keys(this.state.data[this.state.selectedFacet]).map(x => {
+                console.log(x, this.state.data[this.state.selectedFacet][x]);
+                return {
+                  label: x,
+                  y: this.state.data[this.state.selectedFacet][x]
+                };
+              })
         }
       ]
     };
+
+    const pieOptions = [
+      {
+        explodeOnClick: false,
+        innerRadius: "75%",
+        legendMarkerType: "square",
+        name: "Gender wise",
+        radius: "100%",
+        showInLegend: true,
+        startAngle: 90,
+        type: "doughnut",
+        dataPoints: this.state.loading
+          ? []
+          : Object.keys(this.state.data["gender"]).map(x => {
+              console.log(x, this.state.data["gender"][x]);
+              return {
+                label: x,
+                y: this.state.data["gender"][x]
+              };
+            })
+      }
+    ];
 
     return (
       <Layout>
         <Sider
           breakpoint="lg"
           collapsedWidth="0"
-          style={{ backgroundColor: "#393F53", height: "100vh" }}
+          style={{
+            backgroundColor: "#393F53",
+            minHeight: "100%",
+            position: "relative"
+          }}
           onBreakpoint={broken => {
             console.log(broken);
           }}
@@ -106,7 +140,24 @@ export default class App extends Component {
         <Layout>
           <Header style={{ background: "#2D3747", padding: 0 }} />
           <Content style={{ margin: "24px 16px 0" }}>
-            <CanvasJSChart options={options} />
+            {this.state.loading ? (
+              <Spin />
+            ) : (
+              <div>
+                <Select
+                  defaultValue={this.state.selectedFacet}
+                  onChange={e => {
+                    this.setState({ selectedFacet: e });
+                  }}
+                >
+                  {Object.keys(this.state.data).map(k => (
+                    <Select.Option key={k}>{k}</Select.Option>
+                  ))}
+                </Select>
+                <CanvasJSChart options={options} />
+                <CanvasJSChart options={pieOptions} />
+              </div>
+            )}
           </Content>
           <Footer style={{ textAlign: "center" }}>
             Ant Design ©2018 Created by Ant UED

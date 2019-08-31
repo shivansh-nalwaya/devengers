@@ -57,7 +57,7 @@ class RegistrationForm extends React.Component {
             }})
           })
           .catch(err => {
-            console.log(err);
+            this.setState({ loading: false });
             Modal.error({title: "Error"})
           });
       }
