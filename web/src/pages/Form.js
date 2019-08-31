@@ -1,7 +1,7 @@
-import { Button, Card, Form, InputNumber, Select } from "antd";
+import { Button, Card, Form, InputNumber, Select,Modal } from "antd";
 import Options from "./Options";
 import React from "react";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import { Layout, Menu, Icon } from "antd";
 import history from "../history";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -51,10 +51,14 @@ class RegistrationForm extends React.Component {
           .then(res => res.json())
           .then(res => {
             this.setState({ loading: false });
-            console.log(res);
+            const message = res.resp === 0 ? "Treatment not required" : "Treatment required";
+            Modal.success({title: "Success", content: message, okText: "Test another", onOk: () => {
+              window.location.reload()
+            }})
           })
           .catch(err => {
             console.log(err);
+            Modal.error({title: "Error"})
           });
       }
     });
@@ -548,7 +552,7 @@ class RegistrationForm extends React.Component {
                   </Form.Item>
                   <Form.Item {...tailFormItemLayout}>
                     <Button
-                      // loading={this.state.loading}
+                      loading={this.state.loading}
                       type="primary"
                       htmlType="submit"
                     >

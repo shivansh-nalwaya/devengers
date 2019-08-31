@@ -18,15 +18,12 @@ class FeatureSetsController < ApplicationController
     @feature_set = FeatureSet.create(feature_set_params)
     uri = URI('http://10.105.16.114:4444/predict')
     http = Net::HTTP.new(uri.host, uri.port)
-    req = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json',  
-      'Authorization' => 'XXXXXXXXXXXXXXXX'})
-    Rails.logger.info [@feature_set.data.values]
+    req = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json'})
     req.body = {"data" => [@feature_set.data.values]}.to_json
     res = http.request(req)
-    puts "response #{res.body}"
-    puts JSON.parse(res.body)
+    resp =  JSON.parse(res.body)[0]
     if @feature_set.save
-      render json: { message: "Created feature_set", feature_set: @feature_set }, status: :ok
+      render json: { message: "Created feature_set", feature_set: @feature_set, resp: resp }, status: :ok
     else
       render json: { message: @feature_set.errors }, status: :unprocessable_entity
     end
