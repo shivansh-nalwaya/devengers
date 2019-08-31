@@ -47,27 +47,25 @@ export default class App extends Component {
       ]
     };
 
-    const pieOptions = [
-      {
-        explodeOnClick: false,
-        innerRadius: "75%",
-        legendMarkerType: "square",
-        name: "Gender wise",
-        radius: "100%",
-        showInLegend: true,
-        startAngle: 90,
-        type: "doughnut",
-        dataPoints: this.state.loading
-          ? []
-          : Object.keys(this.state.data["gender"]).map(x => {
-              console.log(x, this.state.data["gender"][x]);
-              return {
-                label: x,
-                y: this.state.data["gender"][x]
-              };
-            })
-      }
-    ];
+    const pieOptions = {
+      animationEnabled: true,
+      title: { text: "Gender wise" },
+      data: [
+        {
+          type: "doughnut",
+          showInLegend: true,
+          dataPoints: this.state.loading
+            ? []
+            : Object.keys(this.state.data["gender"]).map(x => {
+                console.log(x, this.state.data["gender"][x]);
+                return {
+                  label: x,
+                  y: this.state.data["gender"][x]
+                };
+              })
+        }
+      ]
+    };
 
     return (
       <Layout>
@@ -159,9 +157,7 @@ export default class App extends Component {
               </div>
             )}
           </Content>
-          <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
+          <Footer style={{ textAlign: "center" }}></Footer>
         </Layout>
       </Layout>
     );
