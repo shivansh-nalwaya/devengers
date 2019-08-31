@@ -14,9 +14,17 @@ services:
       - "3000:3000"
     depends_on:
       - db
-  
+
   server:
     build: ./server
     command: python main.py
     volumes:
       - ./server:/usr/src/app
+
+  web:
+    build: ./web
+    command: npm start
+    volumes:
+      - ./web:/app
+    ports:
+      - "4000:3000"
