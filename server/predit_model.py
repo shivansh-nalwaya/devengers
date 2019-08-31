@@ -1,5 +1,8 @@
 from sklearn.metrics import precision_score, recall_score, confusion_matrix
 from sklearn.linear_model import LogisticRegression
+from sklearn.linear_model import SGDClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
 import numpy as np
 import pandas as pd
 import os
@@ -20,10 +23,36 @@ class LogModel:
         y_train_set = train_data["treatment"].copy()
         self.logreg_classifier = LogisticRegression()
         self.logreg_classifier.fit(X_train_set, y_train_set)
+        self.classifier_withoutscale = SGDClassifier(random_state=3)
+        self.classifier_withoutscale.fit(X_train_set, y_train_set)
+        clf = DecisionTreeClassifier(criterion='entropy', max_depth=1)
+        self.boost = AdaBoostClassifier(base_estimator=clf, n_estimators=500)
+        self.boost.fit(X_train_set, y_train_set)
 
     def log_predict(self, data):
         prediction = self.logreg_classifier.predict(data)
         return prediction
+    def sgd_predict(self,data):
+        y_predict = self.classifier_withoutscale.predict(data)
+        return y_predict
+
+    def boost_predict(self,data):
+        y_pred_class = self.boost.predict(data)
+        return y_pred_class
+    def all_predict(self,data):
+        data = self.data_encoder(data)
+        lg = self.log_predict(data)
+        sgd = self.sgd_predict(data)
+        bst = self.boost_predict(data)
+
+        result=[]
+        for i in range(lg.size):
+            s = sum([lg[i],sgd[i],bst[i]])
+            if(s>=2):
+                result.append(1)
+            else:
+                result.append(0)
+        return result
 
     def data_encoder(self, data):
         mh_data = pd.DataFrame(data,columns=["Age","Gender","Country","state","self_employed","family_history","work_interfere","no_employees","remote_work","tech_company","benefits","care_options","wellness_program","seek_help","anonymity","leave","mental_health_consequence","phys_health_consequence","coworkers","supervisor","mental_health_interview","phys_health_interview","mental_vs_physical","obs_consequence"])
