@@ -64,7 +64,7 @@ export default class App extends Component {
             }}
           >
             <Icon type="menu"></Icon>
-            HR Portal
+            Home
           </div>
           <Menu
             theme="dark"
