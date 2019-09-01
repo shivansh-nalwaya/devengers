@@ -1,26 +1,170 @@
 import React, { Component } from "react";
-import { Layout, Menu, Icon, message, Upload, Button } from "antd";
+import { Layout, Menu, Icon, message, Upload, Button, Table } from "antd";
 import history from "../history";
 
 const { Header, Content, Footer, Sider } = Layout;
 
+const columns = [
+  {
+    title: "s.no",
+    dataIndex: "s.no",
+    key: "s.no"
+  },
+  {
+    title: "Timestamp",
+    dataIndex: "Timestamp",
+    key: "Timestamp"
+  },
+  {
+    title: "Age",
+    dataIndex: "Age",
+    key: "Age"
+  },
+  {
+    title: "Gender",
+    dataIndex: "Gender",
+    key: "Gender"
+  },
+  {
+    title: "Country",
+    dataIndex: "Country",
+    key: "Country"
+  },
+  {
+    title: "state",
+    dataIndex: "state",
+    key: "state"
+  },
+  {
+    title: "self_employed",
+    dataIndex: "self_employed",
+    key: "self_employed"
+  },
+  {
+    title: "family_history",
+    dataIndex: "family_history",
+    key: "family_history"
+  },
+  {
+    title: "work_interfere",
+    dataIndex: "work_interfere",
+    key: "work_interfere"
+  },
+  {
+    title: "no_employees",
+    dataIndex: "no_employees",
+    key: "no_employees"
+  },
+  {
+    title: "remote_work",
+    dataIndex: "remote_work",
+    key: "remote_work"
+  },
+  {
+    title: "tech_company",
+    dataIndex: "tech_company",
+    key: "tech_company"
+  },
+  {
+    title: "benefits",
+    dataIndex: "benefits",
+    key: "benefits"
+  },
+  {
+    title: "care_options",
+    dataIndex: "care_options",
+    key: "care_options"
+  },
+  {
+    title: "wellness_program",
+    dataIndex: "wellness_program",
+    key: "wellness_program"
+  },
+  {
+    title: "seek_help",
+    dataIndex: "seek_help",
+    key: "seek_help"
+  },
+  {
+    title: "anonymity",
+    dataIndex: "anonymity",
+    key: "anonymity"
+  },
+  {
+    title: "leave",
+    dataIndex: "leave",
+    key: "leave"
+  },
+  {
+    title: "mental_health_consequence",
+    dataIndex: "mental_health_consequence",
+    key: "mental_health_consequence"
+  },
+  {
+    title: "phys_health_consequence",
+    dataIndex: "phys_health_consequence",
+    key: "phys_health_consequence"
+  },
+  {
+    title: "coworkers",
+    dataIndex: "coworkers",
+    key: "coworkers"
+  },
+  {
+    title: "supervisor",
+    dataIndex: "supervisor",
+    key: "supervisor"
+  },
+  {
+    title: "mental_health_interview",
+    dataIndex: "mental_health_interview",
+    key: "mental_health_interview"
+  },
+  {
+    title: "phys_health_interview",
+    dataIndex: "phys_health_interview",
+    key: "phys_health_interview"
+  },
+  {
+    title: "mental_vs_physical",
+    dataIndex: "mental_vs_physical",
+    key: "mental_vs_physical"
+  },
+  {
+    title: "obs_consequence",
+    dataIndex: "obs_consequence",
+    key: "obs_consequence"
+  },
+  {
+    title: "comments",
+    dataIndex: "comments",
+    key: "comments"
+  },
+  {
+    title: "Treatment required",
+    dataIndex: "treatment_required",
+    key: "treatment_required"
+  }
+];
+
 export default class App extends Component {
-  state = { loading: true, data: {}, selectedFacet: "age" };
+  state = { showTable: false, data: [] };
 
   render() {
     const props = {
       name: "file",
-      action:
-        "http://trailblazers.southeastasia.cloudapp.azure.com:3000/feature_sets/bulk_upload",
+      action: "http://localhost:3000/feature_sets/bulk_upload",
       headers: {
         authorization: "authorization-text"
       },
-      onChange(info) {
-        if (info.file.status !== "uploading") {
-          console.log(info.file, info.fileList);
-        }
+      onChange: info => {
         if (info.file.status === "done") {
           message.success(`${info.file.name} file uploaded successfully`);
+          console.log(info);
+          this.setState({
+            showTable: true,
+            data: info.file.response.feature_sets
+          });
         } else if (info.file.status === "error") {
           message.error(`${info.file.name} file upload failed.`);
         }
@@ -113,6 +257,9 @@ export default class App extends Component {
                 <Icon type="upload" /> Click to Upload
               </Button>
             </Upload>
+            {this.state.showTable && (
+              <Table columns={columns} dataSource={this.state.data} />
+            )}
           </Content>
           <Footer style={{ textAlign: "center" }}></Footer>
         </Layout>
