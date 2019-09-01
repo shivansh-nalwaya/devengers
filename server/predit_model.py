@@ -234,6 +234,7 @@ class LogModel:
                                                     "MS",
                                                     "LA",
                                                     "ME",
+                                                    "NA",
                                                     "no state referred"]])
         mh_dataclean_encoded.state = state_encoder.fit_transform(
             mh_dataclean_encoded[["state"]])
