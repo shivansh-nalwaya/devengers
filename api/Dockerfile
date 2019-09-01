@@ -6,7 +6,7 @@ COPY Gemfile /api/Gemfile
 COPY Gemfile.lock /api/Gemfile.lock
 RUN bundle install
 COPY . /api
-
+RUN (groupadd -g 1000 app && adduser --system --uid=1000 --gid=1000 --home /home/api --shell /bin/bash app)
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
