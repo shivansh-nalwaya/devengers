@@ -6,9 +6,10 @@ const { Header, Content, Footer, Sider } = Layout;
 
 const columns = [
   {
-    title: "s.no",
+    title: "S. No",
     dataIndex: "s.no",
-    key: "s.no"
+    key: "s.no",
+    fixed: "left"
   },
   {
     title: "Timestamp",
@@ -31,119 +32,121 @@ const columns = [
     key: "Country"
   },
   {
-    title: "state",
+    title: "State",
     dataIndex: "state",
     key: "state"
   },
   {
-    title: "self_employed",
+    title: "Self Employed",
     dataIndex: "self_employed",
     key: "self_employed"
   },
   {
-    title: "family_history",
+    title: "Family History",
     dataIndex: "family_history",
     key: "family_history"
   },
   {
-    title: "work_interfere",
+    title: "Work Interfere",
     dataIndex: "work_interfere",
     key: "work_interfere"
   },
   {
-    title: "no_employees",
+    title: "No. of employees",
     dataIndex: "no_employees",
     key: "no_employees"
   },
   {
-    title: "remote_work",
+    title: "Remote Work",
     dataIndex: "remote_work",
     key: "remote_work"
   },
   {
-    title: "tech_company",
+    title: "Tech Company",
     dataIndex: "tech_company",
     key: "tech_company"
   },
   {
-    title: "benefits",
+    title: "Benefits",
     dataIndex: "benefits",
     key: "benefits"
   },
   {
-    title: "care_options",
+    title: "Care Options",
     dataIndex: "care_options",
     key: "care_options"
   },
   {
-    title: "wellness_program",
+    title: "Wellness Program",
     dataIndex: "wellness_program",
     key: "wellness_program"
   },
   {
-    title: "seek_help",
+    title: "Seek Help",
     dataIndex: "seek_help",
     key: "seek_help"
   },
   {
-    title: "anonymity",
+    title: "Anonymity",
     dataIndex: "anonymity",
     key: "anonymity"
   },
   {
-    title: "leave",
+    title: "Leave",
     dataIndex: "leave",
     key: "leave"
   },
   {
-    title: "mental_health_consequence",
+    title: "Mental Health Consequence",
     dataIndex: "mental_health_consequence",
     key: "mental_health_consequence"
   },
   {
-    title: "phys_health_consequence",
+    title: "Physical Health Consequence",
     dataIndex: "phys_health_consequence",
     key: "phys_health_consequence"
   },
   {
-    title: "coworkers",
+    title: "Coworkers",
     dataIndex: "coworkers",
     key: "coworkers"
   },
   {
-    title: "supervisor",
+    title: "Supervisor",
     dataIndex: "supervisor",
     key: "supervisor"
   },
   {
-    title: "mental_health_interview",
+    title: "Mental Health Interview",
     dataIndex: "mental_health_interview",
     key: "mental_health_interview"
   },
   {
-    title: "phys_health_interview",
+    title: "Physical health interview",
     dataIndex: "phys_health_interview",
     key: "phys_health_interview"
   },
   {
-    title: "mental_vs_physical",
+    title: "Mental vs physical",
     dataIndex: "mental_vs_physical",
     key: "mental_vs_physical"
   },
   {
-    title: "obs_consequence",
+    title: "Obs consequence",
     dataIndex: "obs_consequence",
     key: "obs_consequence"
   },
   {
-    title: "comments",
+    title: "Comments",
     dataIndex: "comments",
     key: "comments"
   },
   {
     title: "Treatment required",
     dataIndex: "treatment_required",
-    key: "treatment_required"
+    key: "treatment_required",
+    fixed: "right",
+    width: 100
   }
 ];
 
@@ -258,7 +261,11 @@ export default class App extends Component {
               </Button>
             </Upload>
             {this.state.showTable && (
-              <Table columns={columns} dataSource={this.state.data} />
+              <Table
+                scroll={{ x: 1600 }}
+                columns={columns}
+                dataSource={this.state.data}
+              />
             )}
           </Content>
           <Footer style={{ textAlign: "center" }}></Footer>
