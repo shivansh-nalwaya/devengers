@@ -1,4 +1,4 @@
-import { Button, Card, Form, InputNumber, Select,Modal } from "antd";
+import { Button, Card, Form, InputNumber, Select, Modal } from "antd";
 import Options from "./Options";
 import React from "react";
 import { Layout, Menu, Icon } from "antd";
@@ -40,25 +40,34 @@ class RegistrationForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.setState({ loading: true });
-        fetch("http://localhost:3000/feature_sets", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({ feature_set: { data: values } })
-        })
+        fetch(
+          "http://trailblazers.centralus.cloudapp.azure.com:3000/feature_sets",
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify({ feature_set: { data: values } })
+          }
+        )
           .then(res => res.json())
           .then(res => {
             this.setState({ loading: false });
-            const message = res.resp === 0 ? "Treatment not required" : "Treatment required";
-            Modal.success({title: "Success", content: message, okText: "Test another", onOk: () => {
-              window.location.reload()
-            }})
+            const message =
+              res.resp === 0 ? "Treatment not required" : "Treatment required";
+            Modal.success({
+              title: "Success",
+              content: message,
+              okText: "Test another",
+              onOk: () => {
+                window.location.reload();
+              }
+            });
           })
           .catch(err => {
             this.setState({ loading: false });
-            Modal.error({title: "Error"})
+            Modal.error({ title: "Error" });
           });
       }
     });
@@ -149,6 +158,16 @@ class RegistrationForm extends React.Component {
             </Menu.Item>
             <Menu.Item
               key="3"
+              style={styles.menuItem}
+              onClick={() => {
+                history.push("/bulk-upload");
+              }}
+            >
+              <Icon type="upload" style={{ fontSize: 18, color: "white" }} />
+              <span className="nav-text">Bulk Upload</span>
+            </Menu.Item>
+            <Menu.Item
+              key="4"
               style={styles.menuItem}
               onClick={() => {
                 history.push("/");

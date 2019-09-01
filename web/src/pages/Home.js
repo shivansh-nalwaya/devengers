@@ -7,14 +7,17 @@ class NormalLoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        fetch("http://localhost:3000/users/sign_in", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify({ user: values })
-        })
+        fetch(
+          "http://trailblazers.centralus.cloudapp.azure.com:3000/users/sign_in",
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify({ user: values })
+          }
+        )
           .then(res => res.json())
           .then(res => {
             history.push("/dashboard");

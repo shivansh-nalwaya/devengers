@@ -1,70 +1,30 @@
 import React, { Component } from "react";
-import CanvasJSReact from "../canvas/canvasjs.react";
-import { Layout, Menu, Icon, Spin, Select } from "antd";
+import { Layout, Menu, Icon, message, Upload, Button } from "antd";
 import history from "../history";
 
-const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const { Header, Content, Footer, Sider } = Layout;
 
 export default class App extends Component {
   state = { loading: true, data: {}, selectedFacet: "age" };
-  constructor(props) {
-    super(props);
-    fetch("http://trailblazers.centralus.cloudapp.azure.com:3000/feature_sets")
-      .then(res => res.json())
-      .then(res => {
-        console.log(res);
-        this.setState({ loading: false, data: res.feature_sets });
-      })
-      .catch(res => {
-        console.log(res);
-        this.setState({ loading: false });
-      });
-  }
-  render() {
-    const options = {
-      animationEnabled: true,
-      exportEnabled: false,
-      theme: "light2",
-      title: {
-        text: "Simple Column Chart with Index Labels"
-      },
-      data: [
-        {
-          type: "column",
-          indexLabelFontColor: "#5A5757",
-          indexLabelPlacement: "outside",
-          dataPoints: this.state.loading
-            ? []
-            : Object.keys(this.state.data[this.state.selectedFacet]).map(x => {
-                console.log(x, this.state.data[this.state.selectedFacet][x]);
-                return {
-                  label: x,
-                  y: this.state.data[this.state.selectedFacet][x]
-                };
-              })
-        }
-      ]
-    };
 
-    const pieOptions = {
-      animationEnabled: true,
-      title: { text: "Gender wise" },
-      data: [
-        {
-          type: "doughnut",
-          showInLegend: true,
-          dataPoints: this.state.loading
-            ? []
-            : Object.keys(this.state.data["gender"]).map(x => {
-                console.log(x, this.state.data["gender"][x]);
-                return {
-                  label: x,
-                  y: this.state.data["gender"][x]
-                };
-              })
+  render() {
+    const props = {
+      name: "file",
+      action:
+        "http://trailblazers.centralus.cloudapp.azure.com:3000/feature_sets/bulk_upload",
+      headers: {
+        authorization: "authorization-text"
+      },
+      onChange(info) {
+        if (info.file.status !== "uploading") {
+          console.log(info.file, info.fileList);
         }
-      ]
+        if (info.file.status === "done") {
+          message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === "error") {
+          message.error(`${info.file.name} file upload failed.`);
+        }
+      }
     };
 
     return (
@@ -148,31 +108,11 @@ export default class App extends Component {
         <Layout>
           <Header style={{ background: "#2D3747", padding: 0 }} />
           <Content style={{ margin: "24px 16px 0" }}>
-            {this.state.loading ? (
-              <Spin />
-            ) : (
-              <div>
-                <Select
-                  defaultValue={this.state.selectedFacet}
-                  style={{ minWidth: 300 }}
-                  onChange={e => {
-                    this.setState({ selectedFacet: e });
-                  }}
-                >
-                  {Object.keys(this.state.data).map(k => (
-                    <Select.Option key={k}>
-                      {k
-                        .replace(/_/g, " ")
-                        .split(" ")
-                        .map(x => x[0].toUpperCase() + x.slice(1, 100))
-                        .join(" ")}
-                    </Select.Option>
-                  ))}
-                </Select>
-                <CanvasJSChart options={options} />
-                <CanvasJSChart options={pieOptions} />
-              </div>
-            )}
+            <Upload {...props}>
+              <Button>
+                <Icon type="upload" /> Click to Upload
+              </Button>
+            </Upload>
           </Content>
           <Footer style={{ textAlign: "center" }}></Footer>
         </Layout>
