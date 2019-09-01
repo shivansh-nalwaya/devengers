@@ -338,4 +338,15 @@ class LogModel:
         mh_dataclean_encoded["obs_consequence"] = my_encoder.fit_transform(
             mh_dataclean_encoded[["obs_consequence"]])
         mh_dataclean_encoded["obs_consequence"].value_counts()
+        if "s.no" in mh_dataclean_encoded.columns:
+            mh_dataclean_encoded = mh_dataclean_encoded.drop("s.no",axis=1)
+        if "Timestamp" in mh_dataclean_encoded.columns:
+            mh_dataclean_encoded = mh_dataclean_encoded.drop(
+                "Timestamp", axis=1)
+        if "comments" in mh_dataclean_encoded.columns:
+            mh_dataclean_encoded = mh_dataclean_encoded.drop(
+                "comments", axis=1)
+        if "treatment" in mh_dataclean_encoded.columns:
+            mh_dataclean_encoded = mh_dataclean_encoded.drop(
+                "treatment", axis=1)
         return mh_dataclean_encoded
