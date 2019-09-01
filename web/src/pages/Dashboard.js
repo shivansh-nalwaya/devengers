@@ -34,7 +34,12 @@ export default class App extends Component {
       exportEnabled: false,
       theme: "light2",
       title: {
-        text: "Simple Column Chart with Index Labels"
+        text:
+          this.state.selectedFacet
+            .replace(/_/g, " ")
+            .split(" ")
+            .map(x => x[0].toUpperCase() + x.slice(1, 100))
+            .join(" ") + " chart"
       },
       tooltip: { shared: true },
       legend: {
