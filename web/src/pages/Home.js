@@ -8,7 +8,7 @@ class NormalLoginForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         fetch(
-          "http://trailblazers.centralus.cloudapp.azure.com:3000/users/sign_in",
+          "http://trailblazers.southeastasia.cloudapp.azure.com:3000/users/sign_in",
           {
             method: "post",
             headers: {

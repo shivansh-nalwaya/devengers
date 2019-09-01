@@ -10,7 +10,9 @@ export default class App extends Component {
   state = { loading: true, data: {}, selectedFacet: "age" };
   constructor(props) {
     super(props);
-    fetch("http://trailblazers.centralus.cloudapp.azure.com:3000/feature_sets")
+    fetch(
+      "http://trailblazers.southeastasia.cloudapp.azure.com:3000/feature_sets"
+    )
       .then(res => res.json())
       .then(res => {
         console.log(res);

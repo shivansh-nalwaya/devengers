@@ -41,7 +41,7 @@ class RegistrationForm extends React.Component {
       if (!err) {
         this.setState({ loading: true });
         fetch(
-          "http://trailblazers.centralus.cloudapp.azure.com:3000/feature_sets",
+          "http://trailblazers.southeastasia.cloudapp.azure.com:3000/feature_sets",
           {
             method: "post",
             headers: {

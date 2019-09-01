@@ -17,7 +17,7 @@ class FeatureSetsController < ApplicationController
 
   def create
     @feature_set = FeatureSet.create(feature_set_params)
-    uri = URI("http://trailblazers.centralus.cloudapp.azure.com:4444/predict")
+    uri = URI("http://trailblazers.southeastasia.cloudapp.azure.com:4444/predict")
     http = Net::HTTP.new(uri.host, uri.port)
     req = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/json" })
     req.body = { "data" => [@feature_set.data.values] }.to_json
@@ -37,7 +37,7 @@ class FeatureSetsController < ApplicationController
     results = []
     csv.each do |row|
       fs = FeatureSet.create(data: row.to_hash)
-      uri = URI("http://trailblazers.centralus.cloudapp.azure.com:4444/predict")
+      uri = URI("http://trailblazers.southeastasia.cloudapp.azure.com:4444/predict")
       http = Net::HTTP.new(uri.host, uri.port)
       req = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/json" })
       req.body = { "data" => [fs.data.values] }.to_json
