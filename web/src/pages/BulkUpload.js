@@ -156,7 +156,8 @@ export default class App extends Component {
   render() {
     const props = {
       name: "file",
-      action: "http://localhost:3000/feature_sets/bulk_upload",
+      action:
+        "http://trailblazers.southeastasia.cloudapp.azure.com:3000/feature_sets/bulk_upload",
       headers: {
         authorization: "authorization-text"
       },
