@@ -40,7 +40,7 @@ class FeatureSetsController < ApplicationController
       data["age"] = data["Age"]
       data["gender"] = data["Gender"]
       data.except!("Age", "Gender", "Timestamp" "comments", "s.no", "treatment_required")
-      fs = FeatureSet.create(data: row.to_hash)
+      fs = FeatureSet.create(data: data)
       uri = URI("http://trailblazers.southeastasia.cloudapp.azure.com:4444/predict")
       http = Net::HTTP.new(uri.host, uri.port)
       req = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/json" })
