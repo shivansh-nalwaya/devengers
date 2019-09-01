@@ -44,7 +44,7 @@ class FeatureSetsController < ApplicationController
       uri = URI("http://trailblazers.southeastasia.cloudapp.azure.com:4444/predict")
       http = Net::HTTP.new(uri.host, uri.port)
       req = Net::HTTP::Post.new(uri.path, { "Content-Type" => "application/json" })
-      req.body = { "data" => [fs.data.values] }.to_json
+      req.body = { "data" => [row.to_h] }.to_json
       res = http.request(req)
       resp = JSON.parse(res.body)[0]
       fs.data["treatment_required"] = resp == 0 ? "No" : "Yes"
