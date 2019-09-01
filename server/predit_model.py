@@ -241,7 +241,7 @@ class LogModel:
 
         # Encoding work_interfere
         workinterfere_enconder = OrdinalEncoder(
-            categories=[["Don't know", "Never", "Rarely", "Sometimes", "Often", "qwerty nansa"]])
+            categories=[["Don't know", "Never", "Rarely", "Sometimes", "Often", "qwerty nansa", "NA"]])
         mh_dataclean_encoded["work_interfere"] = workinterfere_enconder.fit_transform(
             mh_dataclean_encoded[["work_interfere"]])
 
@@ -256,7 +256,8 @@ class LogModel:
             mh_dataclean_encoded[["Gender"]])
         mh_dataclean_encoded["Gender"].value_counts()
         mh_dataclean_encoded["self_employed"].value_counts()
-        my_encoder = OrdinalEncoder(categories=[["Yes", "No", "Don't know"]])
+        my_encoder = OrdinalEncoder(
+            categories=[["Yes", "No", "Don't know", "NA"]])
         mh_dataclean_encoded["self_employed"] = my_encoder.fit_transform(
             mh_dataclean_encoded[["self_employed"]])
         mh_dataclean_encoded["self_employed"].value_counts()

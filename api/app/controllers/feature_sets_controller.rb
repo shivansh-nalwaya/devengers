@@ -38,7 +38,8 @@ class FeatureSetsController < ApplicationController
     csv.each do |row|
       data = row.to_hash
       data["age"] = data["Age"]
-      data.except!("Age", "Timestamp" "comments", "s.no", "treatment_required")
+      data["gender"] = data["Gender"]
+      data.except!("Age", "Gender", "Timestamp" "comments", "s.no", "treatment_required")
       fs = FeatureSet.create(data: row.to_hash)
       uri = URI("http://trailblazers.southeastasia.cloudapp.azure.com:4444/predict")
       http = Net::HTTP.new(uri.host, uri.port)

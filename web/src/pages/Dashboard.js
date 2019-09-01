@@ -7,16 +7,19 @@ const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const { Header, Content, Footer, Sider } = Layout;
 
 export default class App extends Component {
-  state = { loading: true, data: {}, selectedFacet: "age" };
+  state = { loading: true, data: {}, yes: {}, no: {}, selectedFacet: "age" };
   constructor(props) {
     super(props);
-    fetch(
-      "http://trailblazers.southeastasia.cloudapp.azure.com:3000/feature_sets"
-    )
+    fetch("http://localhost:3000/feature_sets")
       .then(res => res.json())
       .then(res => {
         console.log(res);
-        this.setState({ loading: false, data: res.feature_sets });
+        this.setState({
+          loading: false,
+          data: res.feature_sets.hash,
+          yes: res.feature_sets.yes,
+          no: res.feature_sets.no
+        });
       })
       .catch(res => {
         console.log(res);
@@ -33,16 +36,28 @@ export default class App extends Component {
       },
       data: [
         {
-          type: "column",
-          indexLabelFontColor: "#5A5757",
-          indexLabelPlacement: "outside",
+          type: "stackedColumn",
+          name: "Treatment Required",
           dataPoints: this.state.loading
             ? []
-            : Object.keys(this.state.data[this.state.selectedFacet]).map(x => {
-                console.log(x, this.state.data[this.state.selectedFacet][x]);
+            : Object.keys(this.state.yes[this.state.selectedFacet]).map(x => {
+                console.log(x, this.state.yes[this.state.selectedFacet][x]);
                 return {
                   label: x,
-                  y: this.state.data[this.state.selectedFacet][x]
+                  y: this.state.yes[this.state.selectedFacet][x]
+                };
+              })
+        },
+        {
+          type: "stackedColumn",
+          name: "Treatment Not Required",
+          dataPoints: this.state.loading
+            ? []
+            : Object.keys(this.state.no[this.state.selectedFacet]).map(x => {
+                console.log(x, this.state.no[this.state.selectedFacet][x]);
+                return {
+                  label: x,
+                  y: this.state.no[this.state.selectedFacet][x]
                 };
               })
         }
@@ -59,7 +74,6 @@ export default class App extends Component {
           dataPoints: this.state.loading
             ? []
             : Object.keys(this.state.data["gender"]).map(x => {
-                console.log(x, this.state.data["gender"][x]);
                 return {
                   label: x,
                   y: this.state.data["gender"][x]
