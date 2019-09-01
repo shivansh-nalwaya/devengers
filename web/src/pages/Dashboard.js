@@ -34,10 +34,22 @@ export default class App extends Component {
       title: {
         text: "Simple Column Chart with Index Labels"
       },
+      tooltip: { shared: true },
+      legend: {
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        reversed: true,
+        cursor: "pointer"
+      },
+      toolTip: {
+        shared: true,
+        reversed: true
+      },
       data: [
         {
           type: "stackedColumn",
           name: "Treatment Required",
+          showInLegend: true,
           dataPoints: this.state.loading
             ? []
             : Object.keys(this.state.yes[this.state.selectedFacet]).map(x => {
@@ -51,6 +63,7 @@ export default class App extends Component {
         {
           type: "stackedColumn",
           name: "Treatment Not Required",
+          showInLegend: true,
           dataPoints: this.state.loading
             ? []
             : Object.keys(this.state.no[this.state.selectedFacet]).map(x => {
