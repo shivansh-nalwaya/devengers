@@ -32,30 +32,37 @@ class LogModel:
     def log_predict(self, data):
         prediction = self.logreg_classifier.predict(data)
         return prediction
-    def sgd_predict(self,data):
+
+    def sgd_predict(self, data):
         y_predict = self.classifier_withoutscale.predict(data)
         return y_predict
 
-    def boost_predict(self,data):
+    def boost_predict(self, data):
         y_pred_class = self.boost.predict(data)
         return y_pred_class
-    def all_predict(self,data):
+
+    def all_predict(self, data):
         data = self.data_encoder(data)
         lg = self.log_predict(data)
         sgd = self.sgd_predict(data)
         bst = self.boost_predict(data)
 
-        result=[]
+        result = []
         for i in range(lg.size):
-            s = sum([lg[i],sgd[i],bst[i]])
-            if(s>=2):
+            s = sum([lg[i], sgd[i], bst[i]])
+            if(s >= 2):
                 result.append(1)
             else:
                 result.append(0)
         return result
 
     def data_encoder(self, data):
-        mh_data = pd.DataFrame(data,columns=["Age","Gender","Country","state","self_employed","family_history","work_interfere","no_employees","remote_work","tech_company","benefits","care_options","wellness_program","seek_help","anonymity","leave","mental_health_consequence","phys_health_consequence","coworkers","supervisor","mental_health_interview","phys_health_interview","mental_vs_physical","obs_consequence"])
+        cols = ["Age", "Gender", "Country", "state", "self_employed", "family_history", "work_interfere", "no_employees", "remote_work", "tech_company", "benefits", "care_options", "wellness_program", "seek_help",
+                "anonymity", "leave", "mental_health_consequence", "phys_health_consequence", "coworkers", "supervisor", "mental_health_interview", "phys_health_interview", "mental_vs_physical", "obs_consequence"]
+        if(len(data[0]) == 27):
+            cols = ["s.no", "Timestamp", "Age", "Gender", "Country", "state", "self_employed", "family_history", "work_interfere", "no_employees", "remote_work", "tech_company", "benefits", "care_options", "wellness_program", "seek_help",
+                    "anonymity", "leave", "mental_health_consequence", "phys_health_consequence", "coworkers", "supervisor", "mental_health_interview", "phys_health_interview", "mental_vs_physical", "obs_consequence", "comments"]
+        mh_data = pd.DataFrame(data, columns=cols)
         mh_dataclean = mh_data
         print(mh_dataclean)
         mh_dataclean["self_employed"].isnull().value_counts()
@@ -339,7 +346,7 @@ class LogModel:
             mh_dataclean_encoded[["obs_consequence"]])
         mh_dataclean_encoded["obs_consequence"].value_counts()
         if "s.no" in mh_dataclean_encoded.columns:
-            mh_dataclean_encoded = mh_dataclean_encoded.drop("s.no",axis=1)
+            mh_dataclean_encoded = mh_dataclean_encoded.drop("s.no", axis=1)
         if "Timestamp" in mh_dataclean_encoded.columns:
             mh_dataclean_encoded = mh_dataclean_encoded.drop(
                 "Timestamp", axis=1)
