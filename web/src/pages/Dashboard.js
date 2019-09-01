@@ -95,6 +95,7 @@ export default class App extends Component {
             ? []
             : Object.keys(this.state.data["gender"]).map(x => {
                 return {
+                  name: x,
                   label: x,
                   y: this.state.data["gender"][x]
                 };
